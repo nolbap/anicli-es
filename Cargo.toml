@@ -1,6 +1,5 @@
 [package]
 name = "anicli-es"
-authors = "nolbap"
 version = "0.2.0"
 edition = "2018"
 readme = "./README.md"
