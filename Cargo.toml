@@ -6,6 +6,7 @@ readme = "./README.md"
 repository = "https://github.com/nolbap/anicli-es"
 homepage = "https://github.com/nolbap/anicli-es"
 license-file = "./LICENSE"
+description = "Herramienta para ver animé, subtitulado al español, en la línea de comandos."
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
