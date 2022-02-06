@@ -1,7 +1,12 @@
 [package]
 name = "anicli-es"
+authors = "nolbap"
 version = "0.2.0"
 edition = "2018"
+readme = "./README.md"
+repository = "https://github.com/nolbap/anicli-es"
+homepage = "https://github.com/nolbap/anicli-es"
+license-file = "./LICENSE"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
