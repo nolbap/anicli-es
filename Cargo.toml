@@ -1,6 +1,6 @@
 [package]
 name = "anicli-es"
-version = "0.2.31"
+version = "0.2.32"
 edition = "2018"
 readme = "./README.md"
 repository = "https://github.com/nolbap/anicli-es"

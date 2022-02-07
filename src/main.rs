@@ -269,7 +269,7 @@ fn get_video_links(link: String) -> Vec<String> {
 
 fn get_episodes_and_links(source: String) -> Vec<String> {
     let get_links =
-        Regex::new("(<div class=\"col-item\" data-episode=\".*\">\n<a href=\")(.*)(\">)").unwrap();
+        Regex::new("(<div class=\"col-item\".*data-episode=\".*\">\n<a href=\")(.*)(\">)").unwrap();
     let mut links: Vec<String> = Vec::new();
     let mut rlinks: Vec<String> = Vec::new();
 
