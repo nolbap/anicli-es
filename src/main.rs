@@ -30,7 +30,6 @@ fn main() {
 
     //Main loop
     loop {
-        println!("{:?}", checked);
         let mut _query_source = String::new();
 
         //Buscar animé si se encuentra un argumento al principio
