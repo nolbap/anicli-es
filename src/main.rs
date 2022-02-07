@@ -30,6 +30,7 @@ fn main() {
 
     //Main loop
     loop {
+        println!("{:?}", checked);
         let mut _query_source = String::new();
 
         //Buscar animé si se encuentra un argumento al principio
@@ -75,6 +76,8 @@ fn main() {
             escoger_episodio(links.len()),
             choice,
         );
+
+        continue;
     }
 }
 
@@ -334,7 +337,7 @@ fn controller(index: u32, links: Vec<String>, names: Vec<String>, a_index: u32) 
         if opcion.to_lowercase() == "q" {
             std::process::exit(0);
         } else if opcion.to_lowercase() == "b" {
-            main();
+            break();
         } else if case == 1 && opcion.to_lowercase() == "s" {
             mpv(&names, &links, index + 1, a_index);
         } else if case == 2 && opcion.to_lowercase() == "a" {
