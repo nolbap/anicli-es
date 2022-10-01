@@ -1,19 +1,16 @@
 [package]
 name = "anicli-es"
-version = "0.2.34"
-edition = "2018"
+version = "0.3.0"
+edition = "2021"
 readme = "./README.md"
 repository = "https://github.com/nolbap/anicli-es"
 homepage = "https://github.com/nolbap/anicli-es"
 license-file = "./LICENSE"
 description = "Herramienta para ver animé, subtitulado al español, en la línea de comandos."
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
 base64 = "0.13.0"
-curl = "0.4.39"
-dialoguer = "0.9.0"
+dialoguer = "0.10.2"
 getopts = "0.2"
 regex = "1.5"
-ureq = "2.2.0"
+ureq = "2.4.0"
