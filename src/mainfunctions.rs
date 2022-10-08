@@ -144,7 +144,7 @@ pub fn episode_link_scrapper(url: String) -> Vec<Vec<String>> {
         esc = 27 as char
     );
 
-    let is_zeus = Regex::new("(aHR0cHM6Ly9tb25vc2NoaW5vczIuY29tL3JlcHJvZHVjdG9yP3VybD1odHRwczovL3d3dy5zb2xpZGZpbGVzLmNvbS9l)(.*)(\">*eus</a></li>)").unwrap();
+    let is_zeus = Regex::new("(aHR0cHM6Ly9tb25vc2NoaW5vczIuY29tL3JlcHJvZHVjdG9yP3VybD1odHRwczovL3d3dy5zb2xpZGZpbGVzLmNvbS9l)(.*)(\">.eus</a></li>)").unwrap();
     let mut zdone: bool = false;
 
     let is_uqload = Regex::new("(aHR0cHM6Ly9tb25vc2NoaW5vczIuY29tL3JlcHJvZHVjdG9yP3VybD1odHRwczovL3VxbG9hZC5jb20v)(.*)(\">uqload</a></li>)").unwrap();
