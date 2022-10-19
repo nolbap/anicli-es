@@ -6,6 +6,11 @@ pub fn get_source(url: String) -> Result<String, ureq::Error> {
     Ok(source)
 }
 
+pub fn post_request(url: String) -> Result<String, ureq::Error> {
+    let source = ureq::post(&url).call()?.into_string()?;
+    Ok(source)
+}
+
 // Decodifica un String de base64 a un String
 pub fn decode_base64(input: String) -> String {
     let bytes = base64::decode(input).unwrap();

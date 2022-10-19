@@ -50,6 +50,7 @@ pub fn search_query(query: String) -> String {
 // recibe el código fuente de la busqueda como input y devuelve un vector de vectores por cada
 // animé encontrado, con, el nombre del animé, categoría + año y su link
 pub fn query_results(source: String) -> Vec<Vec<String>> {
+
     let get_titles = Regex::new("(<h3 class=\"seristitles\">)(.*)(</h3)").unwrap();
     let get_categories = Regex::new("(<span class=\"seriesinfo\">)(.*)(</span)").unwrap();
     let get_links = Regex::new("(<div class=\"col-md-4 col-lg-2 col-6\">\n<a href=\")(.*)(\">)").unwrap();
@@ -144,24 +145,45 @@ pub fn episode_link_scrapper(url: String) -> Vec<Vec<String>> {
         esc = 27 as char
     );
 
+    let is_puj = Regex::new("(aHR0cHM6Ly9tb25vc2NoaW5vczIuY29tL3JlcHJvZHVjdG9yP3VybD1odHRwczovL3JlcHJvLm1vbm9zY2hpbm9zMi5jb20vYXF1YS9hbT91cmw9)(.*)(\">puj</a></li>)").unwrap();
+    let mut pdone: bool = false;
+
     let is_zeus = Regex::new("(aHR0cHM6Ly9tb25vc2NoaW5vczIuY29tL3JlcHJvZHVjdG9yP3VybD1odHRwczovL3d3dy5zb2xpZGZpbGVzLmNvbS9l)(.*)(\">.eus</a></li>)").unwrap();
     let mut zdone: bool = false;
-
-    let is_uqload = Regex::new("(aHR0cHM6Ly9tb25vc2NoaW5vczIuY29tL3JlcHJvZHVjdG9yP3VybD1odHRwczovL3VxbG9hZC5jb20v)(.*)(\">uqload</a></li>)").unwrap();
-    let mut qdone: bool = false;
   
+    let is_fembed = Regex::new("(aHR0cHM6Ly9tb25vc2NoaW5vczIuY29tL3JlcHJvZHVjdG9yP3VybD1odHRwczovL3d3dy5mZW1iZWQuY29tL3Yv)(.*)(\">fembed2</a></li>)").unwrap();
+    let mut fdone: bool = false;
+
     let is_videobin = Regex::new("(aHR0cHM6Ly9tb25vc2NoaW5vczIuY29tL3JlcHJvZHVjdG9yP3VybD1odHRwczovL3ZpZGVvYmluLmNv)(.*)(\">videobin</a></li>)").unwrap();
     let mut vdone: bool = false;
 
+    let is_uqload = Regex::new("(aHR0cHM6Ly9tb25vc2NoaW5vczIuY29tL3JlcHJvZHVjdG9yP3VybD1odHRwczovL3VxbG9hZC5jb20v)(.*)(\">uqload</a></li>)").unwrap();
+    let mut qdone: bool = false;
+
+    let mut plink: Vec<String> = vec!["0".to_string()];
     let mut zlink: Vec<String> = vec!["0".to_string()];
-    let mut qlink: Vec<String> = vec!["1".to_string()];
+    let mut flink: Vec<String> = vec!["0".to_string()];
     let mut vlink: Vec<String> = vec!["1".to_string()];
+    let mut qlink: Vec<String> = vec!["1".to_string()];
 
     let video_source: String = auxfunctions::get_source(url).unwrap();
 
     loop {
-        if is_zeus.is_match(&video_source) && !zdone {
+        if is_puj.is_match(&video_source) && !pdone {
 
+            plink.push(auxfunctions::decode_base64(
+                is_puj
+                    .captures(&video_source)
+                    .unwrap()
+                    .get(2)
+                    .unwrap()
+                    .as_str()
+                    .to_string()
+            ));
+
+            pdone = true;
+        } else if is_zeus.is_match(&video_source) && !zdone {
+        
             let mut embedded_link: String = "https://www.solidfiles.com/e".to_string();
             embedded_link.push_str(&auxfunctions::decode_base64(
                 is_zeus
@@ -189,11 +211,11 @@ pub fn episode_link_scrapper(url: String) -> Vec<Vec<String>> {
                 }
 
             zdone = true;
-        } else if is_uqload.is_match(&video_source) && !qdone {
-            
-            let mut embedded_link: String = "https://uqload.com/".to_string();
-            embedded_link.push_str(&auxfunctions::decode_base64(
-                is_uqload
+        } else if is_fembed.is_match(&video_source) && !fdone {
+
+            let mut postreq_link: String = "https://fembed-hd.com/api/source/".to_string();
+            postreq_link.push_str(&auxfunctions::decode_base64(
+                is_fembed
                     .captures(&video_source)
                     .unwrap()
                     .get(2)
@@ -202,24 +224,24 @@ pub fn episode_link_scrapper(url: String) -> Vec<Vec<String>> {
                     .to_string()
             ));
 
-            qlink.push(embedded_link);
+            let get_video_link = Regex::new("(,.\"file\":\"https:././fvs.io./)(.*)(\",\"label\":\"720p\")").unwrap();
+            let postreq_source: String = auxfunctions::post_request(postreq_link).unwrap();
+            let mut link: String = "https://fvs.io/".to_string();
 
-            // regex para obtener el archivo mp4 (uqload)
-            let get_video_link = Regex::new("(sources: .\")(.*)(\".)").unwrap();
-            let embedded_source: String = auxfunctions::get_source(qlink.index(1).to_string()).unwrap();
+            if get_video_link.is_match(&postreq_source) {
+                link.push_str(get_video_link
+                        .captures(&postreq_source)
+                        .unwrap()
+                        .get(2)
+                        .unwrap()
+                        .as_str()
+                );
 
-            if get_video_link.is_match(&embedded_source) {
-                qlink.push(get_video_link
-                    .captures(&embedded_source)
-                    .unwrap()
-                    .get(2)
-                    .unwrap()
-                    .as_str()
-                    .to_string()
-                    );
-                }
+                flink.push(link);
+                
+            }
 
-            qdone = true;
+            fdone = true;
         } else if is_videobin.is_match(&video_source) && !vdone {
 
             let mut embedded_link: String = "https://videobin.co".to_string();
@@ -251,11 +273,42 @@ pub fn episode_link_scrapper(url: String) -> Vec<Vec<String>> {
                 }
 
             vdone = true;
+        } else if is_uqload.is_match(&video_source) && !qdone {
+            
+            let mut embedded_link: String = "https://uqload.com/".to_string();
+            embedded_link.push_str(&auxfunctions::decode_base64(
+                is_uqload
+                    .captures(&video_source)
+                    .unwrap()
+                    .get(2)
+                    .unwrap()
+                    .as_str()
+                    .to_string()
+            ));
+
+            qlink.push(embedded_link);
+
+            // regex para obtener el archivo mp4 (uqload)
+            let get_video_link = Regex::new("(sources: .\")(.*)(\".)").unwrap();
+            let embedded_source: String = auxfunctions::get_source(qlink.index(1).to_string()).unwrap();
+
+            if get_video_link.is_match(&embedded_source) {
+                qlink.push(get_video_link
+                    .captures(&embedded_source)
+                    .unwrap()
+                    .get(2)
+                    .unwrap()
+                    .as_str()
+                    .to_string()
+                    );
+                }
+
+            qdone = true;
         } else {
             break;
         }
     }
-    return vec![zlink, qlink, vlink]
+    return vec![plink, zlink, flink, vlink, qlink]
 }
 
 fn getargs(links: Vec<Vec<String>>) -> String {
