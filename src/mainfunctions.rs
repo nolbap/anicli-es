@@ -151,7 +151,7 @@ pub fn episode_link_scrapper(url: String) -> Vec<Vec<String>> {
     let is_zeus = Regex::new("(aHR0cHM6Ly9tb25vc2NoaW5vczIuY29tL3JlcHJvZHVjdG9yP3VybD1odHRwczovL3d3dy5zb2xpZGZpbGVzLmNvbS9l)(.*)(\">.eus</a></li>)").unwrap();
     let mut zdone: bool = false;
   
-    let is_fembed = Regex::new("(aHR0cHM6Ly9tb25vc2NoaW5vczIuY29tL3JlcHJvZHVjdG9yP3VybD1odHRwczovL3d3dy5mZW1iZWQuY29tL3Yv)(.*)(\">fembed2</a></li>)").unwrap();
+    let is_fembed = Regex::new("(aHR0cHM6Ly9tb25vc2NoaW5vczIuY29tL3JlcHJvZHVjdG9yP3VybD1odHRwczovL3d3dy5mZW1iZWQuY29tL3Yv)(.*)(\">fembed.*</a></li>)").unwrap();
     let mut fdone: bool = false;
 
     let is_videobin = Regex::new("(aHR0cHM6Ly9tb25vc2NoaW5vczIuY29tL3JlcHJvZHVjdG9yP3VybD1odHRwczovL3ZpZGVvYmluLmNv)(.*)(\">videobin</a></li>)").unwrap();
@@ -308,7 +308,7 @@ pub fn episode_link_scrapper(url: String) -> Vec<Vec<String>> {
             break;
         }
     }
-    return vec![plink, zlink, flink, vlink, qlink]
+    return vec![flink, zlink, plink, vlink, qlink]
 }
 
 fn getargs(links: Vec<Vec<String>>) -> String {
@@ -331,6 +331,7 @@ fn getargs(links: Vec<Vec<String>>) -> String {
 pub fn mpv(nombre: &String, links: &[String], episodio: i32) {
     
     let episode_links: Vec<Vec<String>> = episode_link_scrapper(links.index(episodio as usize).to_string());
+    println!("{:?}", episode_links);
     let args: String = getargs(episode_links);
 
     if !args.is_empty() {
