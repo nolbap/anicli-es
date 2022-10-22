@@ -331,7 +331,6 @@ fn getargs(links: Vec<Vec<String>>) -> String {
 pub fn mpv(nombre: &String, links: &[String], episodio: i32) {
     
     let episode_links: Vec<Vec<String>> = episode_link_scrapper(links.index(episodio as usize).to_string());
-    println!("{:?}", episode_links);
     let args: String = getargs(episode_links);
 
     if !args.is_empty() {
