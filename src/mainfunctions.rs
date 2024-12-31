@@ -41,7 +41,7 @@ pub fn choose_index(lenght: usize, que: &str) -> i32 {
 
 // recibe un String como busqueda y devuelve el código fuente del resultado
 pub fn search_query(query: String) -> String {
-    let mut url = "https://monoschinos2.com/buscar?q=".to_string();
+    let mut url = "https://monoschinos2.net/buscar?q=".to_string();
     url.push_str(&query);
 
     auxfunctions::get_source(url).unwrap()
